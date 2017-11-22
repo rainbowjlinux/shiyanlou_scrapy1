@@ -12,11 +12,11 @@ class course_spider(scrapy.Spider):
 
     name = 'course-spider'
 
-    def start_requests(self):
+    @property
+    def start_urls(self):
         url_page = 'https://www.shiyanlou.com/courses/?category=all&course_type=all&fee=all&tag=all&page={}'
-        url_allpage = [url_page.format(i) for i in range(1, 24)]
-        for url in url_allpage:
-            yield scrapy.Request(url=url, callback=self.parse)
+        return (url_page.format(i) for i in range(1, 24))
+
     def parse(self, response):
         for course in response.css('div.course-body'):
             yield {
